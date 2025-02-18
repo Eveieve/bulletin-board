@@ -1,5 +1,6 @@
 import java.util.Date;
 
+//@Data
 public class Board {
     private int num;
     private String title;
@@ -25,12 +26,36 @@ public class Board {
         private Date date;
 
         // 외부 클래스에서 부를 수 있도록 퍼블릭.
-        public BoardBuilder(String content, String writer, Date date) {
+        public BoardBuilder(Date date, String writer, String content) {
             this.content = content;
             this.writer = writer;
             this.date = date;
         }
 
+        public BoardBuilder addNum(int num) {
+            this.num = num;
+            return this; // boardBuilder 객체 자체를 반환.
+        }
 
+        public BoardBuilder addTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        // BoardBuilder 클래스 안이지만 Board 타입을 쓸 수 있음.
+        public Board build() {
+            return new Board(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "num=" + num +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", writer='" + writer + '\'' +
+                ", date=" + date +
+                '}';
     }
 }
