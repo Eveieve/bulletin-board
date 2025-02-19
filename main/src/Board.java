@@ -1,17 +1,24 @@
+import lombok.Data;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-//@Data
+@Data
 public class Board {
-    private int num;
+    private int bno;
     private String title;
     private String content;
     private String writer;
-    private Date date;
+    private String date;
 
     // Board 의 프라이빗 생성자.
     // 객체에 넣을 수 있는 필드는 모두 바깥 클래스 생성자에 넣음. toString 했을때 정보 볼 수 있음.
     private Board(BoardBuilder builder) {
-        this.num = builder.num;
+        this.bno = builder.bno;
         this.title = builder.title;
         this.content = builder.content;
         this.date = builder.date;
@@ -19,24 +26,26 @@ public class Board {
 
     public static class BoardBuilder {
         // 생성자 호출할때 생성될 필수 필드.
-        private int num;
+        private int bno;
         private String title;
         private String content;
-        private String writer;
-        private Date date;
+        private String writer; // 디비 연결 되면 자동으로 누군지 ㅈ
+        private String date;
 
         // 외부 클래스에서 부를 수 있도록 퍼블릭.
-        public BoardBuilder(Date date, String writer, String content) {
+        public BoardBuilder(int bno, String writer, String content) {
+            this.bno = bno;
             this.content = content;
             this.writer = writer;
-            this.date = date;
+            // 게시물 생성될때 시간 자동 생성하기.
+            Instant now = Instant.now(Clock.systemUTC());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSSSSSS z"); // 나노초까지
+            ZonedDateTime nowTime = now.atZone(ZoneId.of("Asia/Seoul"));
+            System.out.println(nowTime.format(formatter));
+            this.date = nowTime.format(formatter);
         }
 
-        public BoardBuilder addNum(int num) {
-            this.num = num;
-            return this; // boardBuilder 객체 자체를 반환.
-        }
-
+        // 선택적으로 제목 추가 가능.
         public BoardBuilder addTitle(String title) {
             this.title = title;
             return this;
@@ -51,7 +60,7 @@ public class Board {
     @Override
     public String toString() {
         return "Board{" +
-                "num=" + num +
+                "bno=" + bno +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", writer='" + writer + '\'' +
