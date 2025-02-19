@@ -32,24 +32,46 @@ public class BoardManager {
     }
 
     int getSubmenuOf2() {
-        System.out.println("1. Update | 2. Delete | 3. List");
+        System.out.println("Choose your submenu: 1. Update | 2. Delete | 3. List");
         int subMenu = sc.nextInt();
         return subMenu;
     }
 
 
-    // 2번 보조 메뉴 - 1.업데이트
-    void subMenuOf2(int subMenu, int bno) {
+    // 2번 보조 메뉴 - 1.내용, 작성자 업데이트
+    void submenuOf2(int subMenu, int bno) {
+        Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물 번호
 
         if(subMenu == 1) {
             // Update
-            Board selectedBoard = boardMap.get(bno);
             // 보드맵의 객체 하나하나의 필드값을 바꿀 수 있도록하기.
             // 사용자에게 입력 받기
             System.out.println("Update your content: ");
             String updatedContent = sc.nextLine();
+            System.out.println("Update your author name: ");
+            String updatedWriter = sc.nextLine();
 
-        }
+            selectedBoard.setContent(updatedContent);
+            selectedBoard.setWriter(updatedWriter);
+
+            // getSubmenu again
+            getSubmenuOf2();
+        }else if(subMenu == 2) {
+            // Delete
+            int removeId = bno; // 인자로 받은 bno
+            Board removedBoard = boardMap.remove(removeId);
+            System.out.println("Post number " + removedBoard.getBno() + "is deleted. ");
+            System.out.println("List of posts now: ");
+            boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+
+            getSubmenuOf2();
+        }else if(subMenu == 3) {
+            System.out.println("You have canceled. ");
+            getSubmenuOf2();
+        } else {
+            System.out.println("주어진 값만 입력하세요");
+            getSubmenuOf2();
+        } //***** 숫자가 아니라 문자 입력했을때 예외 준비하기
     }
 
     int getMenuInput() {
