@@ -36,7 +36,27 @@ public class BoardManager {
         int subMenu = sc.nextInt();
         return subMenu;
     }
+    int getMenuInput() {
+        System.out.println("Main Menu: 1. Create | 2. Read | 3. Clear | 4.Exit ");
+        System.out.println("Choose your option: ");
 
+        // 사용자 입력 받기
+        int inNum = sc.nextInt();
+        return inNum;
+    }
+
+    // option 1
+    // 입력 받고 게시물 하나 생성하기.
+    public void create() {
+        // 보드 하나 생성하여 리스트에 순서대로 저장하기
+        int bno = sc.nextInt();
+        String writer = sc.nextLine();
+        String content = sc.nextLine();
+        // 바로 입력 받기
+        Board board = new Board.BoardBuilder(bno, writer, content).build();
+        boards01.add(board);
+        System.out.println(boards01);
+    }
 
     // 2번 보조 메뉴 - 1.내용, 작성자 업데이트
     void submenuOf2(int subMenu, int bno) {
@@ -74,28 +94,23 @@ public class BoardManager {
         } //***** 숫자가 아니라 문자 입력했을때 예외 준비하기
     }
 
-    int getMenuInput() {
-        System.out.println("1, 2, 3, 4, ? : ");
+   // option 3
+    void option3Clear() {
+        System.out.println("Are you sure you want to delete all posts?: 1. Yes | 2. No");
+        int input = sc.nextInt();
+        if(input == 1) {
+            methodMap.clear();
+            System.out.println("All posts have been deleted");
+        } else if(input ==2) {
+            System.out.println("Canceled delete all operation. ");
+        } else {
+            System.out.println("please input a valid number. ");
+        }// *********** exception 처리 문자 입력했을때 해야 할듯?
 
-        Scanner sc = new Scanner(System.in);
-        // 사용자 입력 받기
-        int inNum = sc.nextInt();
-        return inNum;
+        // 남은 게시물 출력
+        System.out.println("Remaining posts: ");
+        boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
     }
-
-
-    // 입력 받고 게시물 하나 생성하기.
-    public void create() {
-        // 보드 하나 생성하여 리스트에 순서대로 저장하기
-        int bno = sc.nextInt();
-        String writer = sc.nextLine();
-        String content = sc.nextLine();
-        // 바로 입력 받기
-        Board board = new Board.BoardBuilder(bno, writer, content).build();
-        boards01.add(board);
-        System.out.println(boards01);
-    }
-
 
 
 }
