@@ -11,13 +11,16 @@ while(status) {
     int userInput = manager.getMenuInput();
 
     if(userInput == 1) {
+
         System.out.println("You have chosen menu 1.");
         manager.create();
 
     } else if(userInput ==2){
-        int subMenu = manager.getSubmenuOf2();
+        manager.menu2_read(); // 먼저 2번 특정 게시물 출력
+        int subMenu = manager.getSubmenuOf2(); // 자동으로 보조 메뉴 호출
         manager.submenuOf2(subMenu);
-        manager.menu2_read();
+
+
     } else if(userInput ==3) {
         manager.menu3_clear();
     } else {

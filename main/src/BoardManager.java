@@ -55,9 +55,11 @@ public class BoardManager {
     // 메뉴 2번 - 특정 번호의 보드 출력
     // bno 반환하기.
     void menu2_read(){
-        getSubmenuOf2();
-        //boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-        //return 0;
+        System.out.println("[Printing your post]");
+        System.out.println("Enter your post number: ");
+        int bno =  Integer.parseInt(sc.nextLine().trim());
+        Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물 번호
+        System.out.println(selectedBoard); // 특정 게시물 출력
     }
 
     int getSubmenuOf2() {
