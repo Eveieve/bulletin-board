@@ -3,7 +3,7 @@ public class Main {
     public static void main(String[] args) {
 
 BoardManager manager = new BoardManager();
-
+manager.initializeBoardMap(); // boarMap 을 초기화 해주기.
 boolean status = true;
 while(status) {
     int userInput = manager.getMenuInput();
@@ -13,9 +13,9 @@ while(status) {
         manager.create();
 
     } else if(userInput ==2){
-        manager.menu2_read();
         int subMenu = manager.getSubmenuOf2();
         manager.submenuOf2(subMenu);
+        manager.menu2_read();
     } else if(userInput ==3) {
         manager.menu3_clear();
     } else {

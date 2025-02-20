@@ -7,15 +7,14 @@ public class BoardManager {
 
      Scanner sc = new Scanner(System.in);
 
-    // 게시물 목록을 담을 boards ArrayList.
-    public List<Board> boards01 = new ArrayList<>();
     public Map<Integer, Board> boardMap = new HashMap<>();
 
     // 초기화 메소드  // 처음 포스트 몇개 넣기!!
-    private void initializeBoardMap() {
+    public void initializeBoardMap() {
         boardMap.put(1, new Board.BoardBuilder(1, "ssg", "It's a nice weather").build());
         boardMap.put(2, new Board.BoardBuilder(2, "ssg2", "It's sunny today.").build());
     }
+
 
     // listBoards = 모든 게시물 목록을 출력한다.
     // int printMenu = 메뉴를 출력한다.
@@ -48,8 +47,8 @@ public class BoardManager {
         String content = sc.nextLine();
         // 바로 입력 받기
         Board board = new Board.BoardBuilder(bno, writer, content).build();
-        boards01.add(board);
-        System.out.println(boards01);
+        boardMap.put(bno, new Board.BoardBuilder(bno, writer, content).build());
+        boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + content));
 
     }
 
