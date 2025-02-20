@@ -47,16 +47,17 @@ public class BoardManager {
         String content = sc.nextLine();
         // 바로 입력 받기
         Board board = new Board.BoardBuilder(bno, writer, content).build();
-        boardMap.put(bno, new Board.BoardBuilder(bno, writer, content).build());
+        boardMap.put(bno, board);
         boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + content));
 
     }
 
     // 메뉴 2번 - 특정 번호의 보드 출력
     // bno 반환하기.
-    int menu2_read(){
-        boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-        return 0;
+    void menu2_read(){
+        getSubmenuOf2();
+        //boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+        //return 0;
     }
 
     int getSubmenuOf2() {

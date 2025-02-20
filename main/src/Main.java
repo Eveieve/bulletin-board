@@ -5,6 +5,8 @@ public class Main {
 BoardManager manager = new BoardManager();
 manager.initializeBoardMap(); // boarMap 을 초기화 해주기.
 boolean status = true;
+
+
 while(status) {
     int userInput = manager.getMenuInput();
 
