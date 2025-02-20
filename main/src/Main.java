@@ -19,7 +19,7 @@ while(status) {
     } else if(userInput ==3) {
         manager.menu3_clear();
     } else {
-        System.out.println("Invalid ouput! Program shutting down. ");
+        System.out.println("Invalid output! Program shutting down. ");
         status = false;
 
     } //////// 이외 값이나 잘못된 타입이 입력됐을때 예외 처리 필요

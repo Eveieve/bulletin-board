@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.*;
 
 public class BoardManager {
@@ -82,8 +84,6 @@ public class BoardManager {
             selectedBoard.setContent(updatedContent);
             selectedBoard.setWriter(updatedWriter);
 
-            // getSubmenu again
-            getSubmenuOf2();
         }else if(subMenu == 2) {
             // Delete
             int removeId = bno; // 인자로 받은 bno
@@ -92,10 +92,11 @@ public class BoardManager {
             System.out.println("List of posts now: ");
             boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
 
-            getSubmenuOf2();
+
         }else if(subMenu == 3) {
-            System.out.println("You have canceled. ");
-            getSubmenuOf2();
+            System.out.println("Listing all posts: ");
+            boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+
         } else {
             System.out.println("주어진 값만 입력하세요");
             getSubmenuOf2();
