@@ -102,7 +102,6 @@ public class BoardManager {
         } //***** 숫자가 아니라 문자 입력했을때 예외 준비하기
     }
 
-   // option 3
     void menu3_clear() {
         System.out.println("Are you sure you want to delete all posts?: 1. Yes | 2. No");
         int input =  Integer.parseInt(sc.nextLine().trim());

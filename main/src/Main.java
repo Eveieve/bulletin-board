@@ -1,8 +1,3 @@
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,9 +13,8 @@ if(userInput == 1) {
     manager.menu2_read();
     int subMenu = manager.getSubmenuOf2();
     manager.submenuOf2(subMenu);
-}else if(userInput ==3) {
+} else if(userInput ==3) {
     manager.menu3_clear();
 }
-
     }
 }
