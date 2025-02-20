@@ -11,6 +11,7 @@ BoardManager manager = new BoardManager();
 int userInput = manager.getMenuInput();
 
 if(userInput == 1) {
+    System.out.println("You have chosen menu 1.");
     manager.create();
 
 } else if(userInput ==2){

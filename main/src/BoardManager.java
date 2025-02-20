@@ -8,8 +8,12 @@ public class BoardManager {
     // 게시물 목록을 담을 boards ArrayList.
     public List<Board> boards01 = new ArrayList<>();
     public Map<Integer, Board> boardMap = new HashMap<>();
-    ///////////// 처음 포스트 몇개 넣기!!
 
+    // 초기화 메소드  // 처음 포스트 몇개 넣기!!
+    private void initializeBoardMap() {
+        boardMap.put(1, new Board.BoardBuilder(1, "ssg", "It's a nice weather").build());
+        boardMap.put(2, new Board.BoardBuilder(2, "ssg2", "It's sunny today.").build());
+    }
 
     // listBoards = 모든 게시물 목록을 출력한다.
     // int printMenu = 메뉴를 출력한다.
@@ -26,19 +30,19 @@ public class BoardManager {
     int getMenuInput() {
         System.out.println("Main Menu: 1. Create | 2. Read | 3. Clear | 4.Exit ");
         System.out.println("Choose your option: ");
-
-        // 사용자 입력 받기
-        int inNum = sc.nextInt();
+        int inNum = Integer.parseInt(sc.nextLine().trim());
         return inNum;
     }
 
     // option 1
     // 입력 받고 게시물 하나 생성하기.
     public void create() {
-
+        System.out.println("Number of this post?: ");
         // 보드 하나 생성하여 리스트에 순서대로 저장하기
-        int bno = sc.nextInt();
+        int bno =  Integer.parseInt(sc.nextLine().trim());
+        System.out.println("Writer of this post?: ");
         String writer = sc.nextLine();
+        System.out.println("Content of this post: ");
         String content = sc.nextLine();
         // 바로 입력 받기
         Board board = new Board.BoardBuilder(bno, writer, content).build();
@@ -51,18 +55,19 @@ public class BoardManager {
     // bno 반환하기.
     int menu2_read(){
         boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+        return 0;
     }
 
     int getSubmenuOf2() {
         System.out.println("Choose your submenu: 1. Update | 2. Delete | 3. List");
-        int subMenu = sc.nextInt();
+        int subMenu =  Integer.parseInt(sc.nextLine().trim());
         return subMenu;
     }
 
     // 2번 보조 메뉴 - 1.내용, 작성자 업데이트
     void submenuOf2(int subMenu) {
         System.out.println("Enter your post number: ");
-        int bno = sc.nextInt();
+        int bno =  Integer.parseInt(sc.nextLine().trim());
         Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물 번호
 
         if(subMenu == 1) {
@@ -82,8 +87,8 @@ public class BoardManager {
         }else if(subMenu == 2) {
             // Delete
             int removeId = bno; // 인자로 받은 bno
-            Board removedBoard = boardMap.remove(removeId);
-            System.out.println("Post number " + removedBoard.getBno() + "is deleted. ");
+            boardMap.remove(removeId); //  보드가 아니라 값을 반환함.
+            //System.out.println("Post number " + removedBoard.getBno() + "is deleted. ");
             System.out.println("List of posts now: ");
             boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
 
@@ -100,7 +105,7 @@ public class BoardManager {
    // option 3
     void menu3_clear() {
         System.out.println("Are you sure you want to delete all posts?: 1. Yes | 2. No");
-        int input = sc.nextInt();
+        int input =  Integer.parseInt(sc.nextLine().trim());
         if(input == 1) {
             methodMap.clear();
             System.out.println("All posts have been deleted");
