@@ -16,8 +16,8 @@ public class BoardManager {
     AtomicInteger keyGenerator = new AtomicInteger(1); // 1씩 자동 증가하는 키.
     // 초기화 메소드  // 처음 포스트 몇개 넣기!!
     public void initializeBoardMap() {
-        boardMap.put(keyGenerator.getAndIncrement(), new Board.BoardBuilder("hello","ssg", "It's a nice weather").build());
-        boardMap.put(keyGenerator.getAndIncrement(), new Board.BoardBuilder("title2","ssg2", "It's sunny today.").build());
+        boardMap.put(1, new Board.BoardBuilder(1, "hello","ssg", "It's a nice weather").build());
+        boardMap.put(2, new Board.BoardBuilder(2, "title2","ssg2", "It's sunny today.").build());
     }
 
     // 처음 사용자로부터 메뉴 입력 받기. 입력 정수 반환.
@@ -46,47 +46,32 @@ public class BoardManager {
 
     // 입력 받고 게시물 하나 생성하기. 보드 객체 반환.
     Board menu1_create() {
-        System.out.println("Number of this post?: ");
-
-        // 보드 하나 생성하여 리스트에 순서대로 저장하기
-        int bno = 0;
-
-//        while(true) {
-//            try {
-//                bno = Integer.parseInt(sc.nextLine().trim());
-//                break; // 정상적으로 입력되면 루프 종료하기.
-//            } catch (NumberFormatException e) {
-//                e.printStackTrace();
-//                System.out.println(invalidFormatMsg);
-//            }
-//        }
 
         System.out.println(Constants.TITLE);
         String title = " ";
-        while(true) {
+        while (true) {
             try {
                 title = sc.nextLine();
                 break;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            } catch (NumberFormatException e) {
+                ExceptionStrings.printInvalidFormatMsg(e);
             }
         }
 
         System.out.println(Constants.CONTENT);
         String content = " ";
-        while(true) {
+        while (true) {
             try {
                 content = sc.nextLine();
                 break;
             } catch (NumberFormatException e) {
-                e.printStackTrace();
-                System.out.println(invalidFormatMsg);
+                ExceptionStrings.printInvalidFormatMsg(e);
             }
         }
 
         System.out.println(Constants.WRITER);
         String writer = " ";
-        while(true) {
+        while (true) {
             try {
                 writer = sc.nextLine();
                 break;
@@ -94,8 +79,13 @@ public class BoardManager {
                 throw new RuntimeException(e);
             }
         }
-        Board board = new Board.BoardBuilder(title, writer, content).build();
+
+        if (getSubmenuOf1() == 1) {
+            Board board = new Board.BoardBuilder(title, writer, content).build();
             return board;
+        } else if (getSubmenuOf1() == 2) System.out.println("작업을 취소하였습니다. ");
+
+        return null;
     }
 
     int getSubmenuOf1() {
@@ -111,11 +101,14 @@ public class BoardManager {
                     System.out.println(invalidNumberMsg);
                 }
             } catch (NumberFormatException e) {
-                e.printStackTrace();
-                System.out.println(invalidFormatMsg); // wrong format
-                // try again
+               ExceptionStrings.printInvalidFormatMsg(e);
             }
         }
+
+    }
+
+    void runMenu1() {
+        // submenu 받고, 드디어 메인 메뉴 2 실행
 
     }
 

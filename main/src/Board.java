@@ -62,7 +62,18 @@ public class Board {
             this.date = nowTime.format(formatter);
         }
 
-
+        public BoardBuilder(int bno, String title, String writer, String content) {
+            this.bno = bno;
+            this.title = title;
+            this.content = content;
+            this.writer = writer;
+            // 게시물 생성될때 시간 자동 생성하기.
+            Instant now = Instant.now(Clock.systemUTC());
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSSSSSS z"); // 나노초까지
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            ZonedDateTime nowTime = now.atZone(ZoneId.of("Asia/Seoul"));
+            this.date = nowTime.format(formatter);
+        }
         // BoardBuilder 클래스 안이지만 Board 타입을 쓸 수 있음.
         public Board build() {
             return new Board(this);
