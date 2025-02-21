@@ -4,9 +4,12 @@ public class Constants {
     public static final String hashLine = "#".repeat(50);
     public static final String dashLine = "-".repeat(60);
 
+    public static final String BNO = "bno: ";
+    public static final String BNO_KOREAN = "번호: ";
     public static final String TITLE = "제목: ";
     public static final String CONTENT = "내용: ";
     public static final String WRITER= "작성자: ";
+    public static final String DATE= "날짜: ";
 
 
     public static final String LIST_ALL_BOARDS= "[게시물 목록]\n";

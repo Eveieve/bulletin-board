@@ -1,7 +1,4 @@
-import org.w3c.dom.ls.LSOutput;
 
-import javax.crypto.KeyGenerator;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -126,7 +123,9 @@ public class BoardManager {
         try {
             if (submenu == 1) { // 저장하기.
                 // 저장 누르면 저장하기.
-                boardMap.put(keyGenerator.getAndIncrement(), board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
+                int nowBno = keyGenerator.getAndIncrement();
+                boardMap.put(nowBno, board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
+                board.setBno(nowBno); // 자동 생성되는 키값으로 bno 필드도 세팅.
                 // 저장 후 전체 게시물 출력하기. --> 사용자가 지정한 bno 나오지 않고 맵의 key 출력됨.
                 boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
             } else if(submenu == 2) {
@@ -144,30 +143,29 @@ public class BoardManager {
         System.out.println("[게시물 읽기]");
 
         int bno = 0;
-        Board selectedBoard;
+
         while(true) {
             try {
                 try {
                     System.out.print("bno: ");
                     bno = Integer.parseInt(sc.nextLine().trim());
+                    Board selectedBoard = boardMap.get(bno);
+
+                    System.out.println(Constants.hashLine);
+                    System.out.println(Constants.BNO_KOREAN + selectedBoard.getBno());
+                    System.out.println(Constants.TITLE + selectedBoard.getTitle());
+                    System.out.println(Constants.CONTENT + selectedBoard.getContent());
+                    System.out.println(Constants.WRITER + selectedBoard.getWriter());
+                    System.out.println(Constants.DATE + selectedBoard.getDate());
+                    break;
                 } catch (NumberFormatException e) {
                     ExceptionStrings.printInvalidFormatMsg(e);
                 }
-                System.out.println(Constants.hashLine);
-                selectedBoard = Objects.requireNonNull(boardMap.get(bno), "null 값입니다. ");
-                break;
             } catch (NullPointerException e) {
+                //selectedBoard = Objects.requireNonNull(boardMap.get(bno), "null 값입니다. ");
                 System.out.println("해당 게시물이 없습니다. 다시 게시물 번호를 입력하시오.");
             }
         }
-
-        System.out.println("bno: " + bno);
-        System.out.println(Constants.hashLine);
-        System.out.println("번호: " + selectedBoard.getBno());
-        //System.out.println("제목: " + selectedBoard.getTitle());
-        System.out.println("내용: " + selectedBoard.getContent());
-        System.out.println("작성자: " + selectedBoard.getWriter());
-        System.out.println("날짜:  " + selectedBoard.getDate());
 
         return bno;
     }
