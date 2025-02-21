@@ -1,5 +1,6 @@
 import org.w3c.dom.ls.LSOutput;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 // 보드 매니저는 게시물을 관리한다. 생성 삭제 업데이트 등의 기능을 수행한다.
@@ -19,18 +20,6 @@ public class BoardManager {
         boardMap.put(1, new Board.BoardBuilder(1, "ssg", "It's a nice weather").build());
         boardMap.put(2, new Board.BoardBuilder(2, "ssg2", "It's sunny today.").build());
     }
-
-
-    // listBoards = 모든 게시물 목록을 출력한다.
-    // int printMenu = 메뉴를 출력한다.
-    // getMenuInput = 사용자의 값을 입력 받는다.
-
-    // 메소드들과 사용자 입력 메뉴 매핑하기.
-//    Map<Integer, Runnable> methodMap = new HashMap<>();
-//
-//    private void mapMethods() {
-//        methodMap.put(1, this::create); // 패스할걸 여기서 미리 정해야 하나?
-//    }
 
     // 처음 사용자로부터 메뉴 입력 받기. 입력 정수 반환.
     int getMenuInput() {
@@ -140,18 +129,38 @@ public class BoardManager {
     // 메뉴 2번 - 특정 번호의 보드 출력
     // bno 반환하기.
     int menu2_read(){
-        System.out.println("[Printing your post]");
-        System.out.println("Enter your post number: ");
+        System.out.println("[게시물 읽기]");
+        System.out.print("bno: ");
         int bno =  Integer.parseInt(sc.nextLine().trim());
+        System.out.println(Constants.hashLine);
         Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물 번호
-        System.out.println(selectedBoard); // 특정 게시물 출력
+        System.out.println("bno: " + bno);
+        System.out.println(Constants.hashLine);
+        System.out.println("번호: " + selectedBoard.getBno());
+        //System.out.println("제목: " + selectedBoard.getTitle());
+        System.out.println("내용: " + selectedBoard.getContent());
+        System.out.println("작성자: " + selectedBoard.getWriter());
+        System.out.println("날짜:  " + selectedBoard.getDate());
 
         return bno;
     }
 
     int getSubmenuOf2() {
-        System.out.println("Choose your submenu: 1. Update | 2. Delete | 3. List");
-        int subMenu =  Integer.parseInt(sc.nextLine().trim());
+        System.out.println(Constants.dashLine);
+        System.out.println("보조 메뉴: 1. Update | 2. Delete | 3. List");
+
+        System.out.print("bno: ");
+        int subMenu = 0;
+        try {
+            subMenu = Integer.parseInt(sc.nextLine().trim());
+            if(subMenu == 1 || subMenu == 2 || subMenu == 3) return subMenu;
+            else {
+                System.out.println(ExceptionStrings.invalidNumberMsg);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            System.out.println(ExceptionStrings.invalidFormatMsg);
+        }
         return subMenu;
     }
 
@@ -163,11 +172,31 @@ public class BoardManager {
         if(subMenu == 1) {  // Update
             // 보드맵의 객체 하나하나의 필드값을 바꿀 수 있도록하기.
             // 사용자에게 입력 받기
-            System.out.println("Update your content: ");
-            String updatedContent = sc.nextLine();
-            System.out.println("Update your author name: ");
-            String updatedWriter = sc.nextLine();
+            System.out.println("[수정 내용 입력]");
 
+            String updatedTitle = null;
+            try {
+                System.out.print(Constants.TITLE);
+                updatedTitle = sc.nextLine();
+            } catch (NumberFormatException e) {
+                ExceptionStrings.printInvalidNumberMsg(e);
+            }
+            String updatedContent = null;
+            try {
+                System.out.print(Constants.CONTENT);
+                updatedContent = sc.nextLine();
+            } catch (NumberFormatException e) {
+                ExceptionStrings.printInvalidNumberMsg(e);
+            }
+            String updatedWriter = null;
+            try {
+                System.out.print(Constants.WRITER);
+                updatedWriter = sc.nextLine();
+            } catch (NumberFormatException e ) {
+                ExceptionStrings.printInvalidNumberMsg(e);
+            }
+
+            selectedBoard.setTitle(updatedTitle);
             selectedBoard.setContent(updatedContent);
             selectedBoard.setWriter(updatedWriter);
 
@@ -176,10 +205,14 @@ public class BoardManager {
             int removeId = bno; // 인자로 받은 bno
             boardMap.remove(removeId); //  보드가 아니라 값을 반환함.
             //System.out.println("Post number " + removedBoard.getBno() + "is deleted. ");
-            System.out.println("List of posts now: ");
-            boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-
-
+            System.out.println(Constants.LIST_ALL_BOARDS);
+            System.out.println(Constants.dashLine);
+            System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
+            System.out.println(Constants.dashLine);
+            //boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+            for (Board board : boardMap.values()) {
+                System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+            }
         }else if(subMenu == 3) {
             System.out.println("Listing all posts: ");
             boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));

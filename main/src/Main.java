@@ -27,6 +27,8 @@ while(status) {
             manager.menu3_clear();
         } else if(userInput == 4){
             manager.menu4_exit();
+        } else {
+            System.out.println(ExceptionStrings.invalidFormatMsg);
         }
     } catch (NumberFormatException e) {
         e.printStackTrace();
