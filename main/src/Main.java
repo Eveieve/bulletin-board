@@ -18,9 +18,9 @@ while(status) {
             //manager.runSubMenuOf1(submenu, createdBoard);
 
         } else if(userInput ==2){
-            int bno = manager.menu2_read(); // 먼저 2번 특정 게시물 출력, 사용자가 선택한 게시물 번호 반환.
-            int submenu = manager.getSubmenuOf2(); // 자동으로 보조 메뉴 호출
-            manager.runSubmenuOf2(submenu); // submenu2 - 1 도 자동 호출.
+            int userBno = manager.menu2_read(); // 먼저 2번 특정 게시물 출력, 사용자가 선택한 게시물 번호 반환.
+            //manager.getSubmenuOf2(); // 자동으로 보조 메뉴 호출
+            manager.runSubmenuOf2(userBno); // submenu2 - 1 도 자동 호출.
 
         } else if(userInput ==3) {
             manager.menu3_clear();

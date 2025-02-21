@@ -13,16 +13,14 @@ public class BoardManager {
     // 초기화 메소드  // 처음 포스트 몇개 넣기!!
  
     public void initializeBoardList(){ // bno 자동생성되기.
-        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "공지사항", "관리자", "사이트 업데이트 공지").build());
-        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "자유게시판", "사용자1", "오늘 날씨 좋네요").build());
-        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "질문게시판", "사용자2", "자바 질문 있습니다").build());
-        
+        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "게시판에 오신 것을 환영합니다. ", "winter", "사이트 업데이트 공지").build());
+        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "올 겨울은 많이 춥습니다.", "winter", "오늘 날씨 좋네요").build());
     }
 
     // 처음 사용자로부터 메뉴 입력 받기. 입력 정수 반환.
     int getMainMenu() {
-        System.out.println("Main Menu: 1. Create | 2. Read | 3. Clear | 4.Exit ");
-        System.out.println("Choose your option: ");
+        System.out.println("메인 메뉴: 1. Create | 2. Read | 3. Clear | 4.Exit ");
+        System.out.println("메뉴 선택: ");
 
         // 허용할 숫자 목록
         List<Integer> allowed = Arrays.asList(1, 2, 3, 4);
@@ -135,15 +133,14 @@ public class BoardManager {
     // bno 반환하기.
     int menu2_read(){
         System.out.println("[게시물 읽기]");
-
-        int bno = 0;
-
+        int bno =0;
         while(true) {
             try {
                 try {
-                    System.out.print("bno: ");
-                    bno = Integer.parseInt(sc.nextLine().trim());
-                    Board selectedBoard = boardList.get(bno);
+                    System.out.print("bno: "); // 읽을 게시물의 bno
+                     bno = Integer.parseInt(sc.nextLine().trim());
+                    int finalBno = bno;
+                    Board selectedBoard = boardList.stream().filter(board -> board.getBno() == finalBno).findFirst().orElse(null);
 
                     System.out.println(Constants.hashLine);
                     System.out.println(Constants.BNO_KOREAN + selectedBoard.getBno());
@@ -183,9 +180,9 @@ public class BoardManager {
     }
 
     // 2번 보조 메뉴 - 이미 게시물 번호 선택한 상태 - 1.내용, 작성자 업데이트
-    void runSubmenuOf2( int bno) {
+    void runSubmenuOf2(int userBno) {
 
-        Board selectedBoard = boardList.get(bno); // 사용자가 선택한 게시물
+        Board selectedBoard = boardList.stream().filter(board -> board.getBno() == userBno).findFirst().orElse(null);
 
         while(true) {
           int subMenu =   getSubmenuOf2(); // 올바른 값 입력될때까지 계속 menu2의 submenu 받기.
@@ -232,18 +229,13 @@ public class BoardManager {
 
                     break;
                 }else if(subMenu == 2) { //  submenu 2 - Delete
-                    int removeId = bno; // 인자로 받은 bno
-                    // boardList.remove(removeId); //  보드가 아니라 값을 반환함.
-                    System.out.println("Post number " + removeId + "is deleted. ");
-                    System.out.println(Constants.LIST_ALL_BOARDS);
-                    System.out.println(Constants.dashLine);
-                    System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
-                    System.out.println(Constants.dashLine);
-                    //boardList.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-                    for (Board board : boardList) {
-                        System.out.printf("%-3d %-10s %-12s %s%n",
-                                board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
-                    }
+                    System.out.println("[게시물 삭제]");
+                    int removeId = userBno; // 인자로 받은 bno, 0 is 1
+
+                    boardList.remove(removeId-1); // remove 1 board
+                    // 게시판 전체 출력
+                    printAllBoards();
+
                     break;
                 }else if(subMenu == 3) { // submenu 3 - List - 전체 게시물 출력하기
                    printAllBoards();
@@ -268,25 +260,28 @@ public class BoardManager {
         System.out.println("게시물이 수정 되었습니다. ");
     }
     void menu3_clear() {
-        System.out.println("Are you sure you want to delete all posts?: 1. Yes | 2. No");
-        int inadd =  Integer.parseInt(sc.nextLine().trim());
-        if(inadd == 1) {
-            boardList.clear();
-            System.out.println("All posts have been deleted");
-        } else if(inadd ==2) {
-            System.out.println("Canceled delete all operation. ");
-        } else {
-            System.out.println("please inadd a valid number. ");
-        }// *********** exception 처리 문자 입력했을때 해야 할듯?
+        System.out.println("[게시물 전체 삭제]");
 
-        // 남은 게시물 출력
-        System.out.println("Remaining posts: ");
-        for (Board board : boardList) {
-            System.out.printf("%-3d %-10s %-12s %s%n",
-                    board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+        try {
+            int userInput =  getSubMenuOf3();
+            if(userInput == 1) {
+                boardList.clear(); // 전체 삭제하기.
+                printAllBoards(); // 전체 출력해주기.
+            } else if(userInput ==2) {
+                System.out.println("작업을 취소합니다. ");
+            } else {
+                ExceptionStrings.printInvalidNumberMsg();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
     }
 
+    int getSubMenuOf3() {
+        System.out.println("보조메뉴: 1. Yes | 2. No");
+        return Integer.parseInt(sc.nextLine().trim());
+    }
     void menu4_exit() {
         System.out.println("** 게시판 종료 **");
         System.exit(0);
