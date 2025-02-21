@@ -130,10 +130,25 @@ public class BoardManager {
     // bno 반환하기.
     int menu2_read(){
         System.out.println("[게시물 읽기]");
-        System.out.print("bno: ");
-        int bno =  Integer.parseInt(sc.nextLine().trim());
-        System.out.println(Constants.hashLine);
-        Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물 번호
+
+        int bno = 0;
+        Board selectedBoard;
+        while(true) {
+            try {
+                try {
+                    System.out.print("bno: ");
+                    bno = Integer.parseInt(sc.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    ExceptionStrings.printInvalidFormatMsg();
+                }
+                System.out.println(Constants.hashLine);
+                selectedBoard = Objects.requireNonNull(boardMap.get(bno), "null 값입니다. ");
+                break;
+            } catch (NullPointerException e) {
+                System.out.println("해당 게시물이 없습니다. 다시 게시물 번호를 입력하시오.");
+            }
+        }
+
         System.out.println("bno: " + bno);
         System.out.println(Constants.hashLine);
         System.out.println("번호: " + selectedBoard.getBno());
@@ -205,6 +220,18 @@ public class BoardManager {
             int removeId = bno; // 인자로 받은 bno
             boardMap.remove(removeId); //  보드가 아니라 값을 반환함.
             //System.out.println("Post number " + removedBoard.getBno() + "is deleted. ");
+//            System.out.println(Constants.LIST_ALL_BOARDS);
+//            System.out.println(Constants.dashLine);
+//            System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
+//            System.out.println(Constants.dashLine);
+//            //boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+//            for (Board board : boardMap.values()) {
+//                System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+//            }
+        }else if(subMenu == 3) {
+//            System.out.println("Listing all posts: ");
+//            boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+
             System.out.println(Constants.LIST_ALL_BOARDS);
             System.out.println(Constants.dashLine);
             System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
@@ -213,10 +240,6 @@ public class BoardManager {
             for (Board board : boardMap.values()) {
                 System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
             }
-        }else if(subMenu == 3) {
-            System.out.println("Listing all posts: ");
-            boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-
         } else {
             System.out.println("주어진 값만 입력하세요");
             getSubmenuOf2();
