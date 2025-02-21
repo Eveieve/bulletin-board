@@ -80,8 +80,16 @@ public class BoardManager {
             }
         }
 
+        // submenu에 따라 저장할지 취소할지 결정
         if (getSubmenuOf1() == 1) {
             Board board = new Board.BoardBuilder(title, writer, content).build();
+
+            // 그냥 바로 뒤에 보드 추가하기.
+            boardMap.put(keyGenerator.getAndIncrement(), board);
+
+            // 전체 게시물 출력하기.
+            printAllBoards();
+            // 생성된 보드 객체 반환.
             return board;
         } else if (getSubmenuOf1() == 2) System.out.println("작업을 취소하였습니다. ");
 
@@ -107,28 +115,23 @@ public class BoardManager {
 
     }
 
-    void runMenu1() {
-        // submenu 받고, 드디어 메인 메뉴 2 실행
-
-    }
-
-    void runSubMenuOf1(int submenu, Board board) {
-        try {
-            if (submenu == 1) { // 저장하기.
-                // 저장 누르면 저장하기.
-                int nowBno = keyGenerator.getAndIncrement();
-                boardMap.put(nowBno, board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
-                board.setBno(nowBno); // 자동 생성되는 키값으로 bno 필드도 세팅.
-                // 저장 후 전체 게시물 출력하기. --> 사용자가 지정한 bno 나오지 않고 맵의 key 출력됨.
-                boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
-            } else if(submenu == 2) {
-                System.out.println("Canceled operation. ");
-            }
-        } catch (NumberFormatException e) {
-           e.printStackTrace();
-            System.out.println(invalidNumberMsg);
-        }
-    }
+//    void runSubMenuOf1(int submenu, Board board) {
+//        try {
+//            if (submenu == 1) { // 저장하기.
+//                // 저장 누르면 저장하기.
+//                int nowBno = keyGenerator.getAndIncrement();
+//                boardMap.put(nowBno, board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
+//                board.setBno(nowBno); // 자동 생성되는 키값으로 bno 필드도 세팅.
+//                // 저장 후 전체 게시물 출력하기. --> 사용자가 지정한 bno 나오지 않고 맵의 key 출력됨.
+//                boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
+//            } else if(submenu == 2) {
+//                System.out.println("Canceled operation. ");
+//            }
+//        } catch (NumberFormatException e) {
+//           e.printStackTrace();
+//            System.out.println(invalidNumberMsg);
+//        }
+//    }
 
     // 메뉴 2번 - 특정 번호의 보드 출력
     // bno 반환하기.
@@ -243,15 +246,8 @@ public class BoardManager {
                         System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
                     }
                     break;
-                }else if(subMenu == 3) { // submenu 3 - List
-                    System.out.println(Constants.dashLine);
-                    System.out.println(Constants.LIST_ALL_BOARDS);
-                    System.out.println(Constants.dashLine);
-                    System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title\n");
-                    System.out.println(Constants.dashLine);
-                    for (Board board : boardMap.values()) {
-                        System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
-                    }
+                }else if(subMenu == 3) { // submenu 3 - List - 전체 게시물 출력하기
+                   printAllBoards();
                     break;
                 } else {
                     ExceptionStrings.printInvalidNumberMsg();
@@ -294,4 +290,14 @@ public class BoardManager {
         System.exit(0);
     }
 
+    void printAllBoards() {
+        System.out.println(Constants.dashLine);
+        System.out.println(Constants.LIST_ALL_BOARDS);
+        System.out.println(Constants.dashLine);
+        System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title\n");
+        System.out.println(Constants.dashLine);
+        for (Board board : boardMap.values()) {
+            System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+        }
+    }
 }
