@@ -185,6 +185,7 @@ public class BoardManager {
         Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물
 
         while(true) {
+            getSubmenuOf2(); // 올바른 값 입력될때까지 계속 menu2의 submenu 받기.
             try {
                 if(subMenu == 1) {  // Update
                     // 보드맵의 객체 하나하나의 필드값을 바꿀 수 있도록하기.
