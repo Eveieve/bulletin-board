@@ -46,7 +46,7 @@ public class Board {
         private int bno;
         private String title;
         private String content;
-        private String writer; // 디비 연결 되면 자동으로 누군지 ㅈ
+        private String writer; // 디비 연결 되면 자동으로 누군지 알 수 있도록.
         private String date;
 
         // 외부 클래스에서 부를 수 있도록 퍼블릭.
@@ -58,7 +58,6 @@ public class Board {
             Instant now = Instant.now(Clock.systemUTC());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSSSSSS z"); // 나노초까지
             ZonedDateTime nowTime = now.atZone(ZoneId.of("Asia/Seoul"));
-            System.out.println(nowTime.format(formatter));
             this.date = nowTime.format(formatter);
         }
 

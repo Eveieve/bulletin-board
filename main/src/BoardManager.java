@@ -56,9 +56,8 @@ public class BoardManager {
 
     }
 
-    // option 1
     // 입력 받고 게시물 하나 생성하기. 보드 객체 반환.
-    Board create() {
+    Board menu1_create() {
         System.out.println("Number of this post?: ");
 
         // 보드 하나 생성하여 리스트에 순서대로 저장하기
@@ -97,11 +96,7 @@ public class BoardManager {
             }
         }
 
-
         Board board = new Board.BoardBuilder(bno, writer, content).build();
-//        boardMap.put(bno, board);
-//        boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
-
             return board;
     }
 
@@ -165,8 +160,7 @@ public class BoardManager {
 
         Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물
 
-        if(subMenu == 1) {
-            // Update
+        if(subMenu == 1) {  // Update
             // 보드맵의 객체 하나하나의 필드값을 바꿀 수 있도록하기.
             // 사용자에게 입력 받기
             System.out.println("Update your content: ");
