@@ -43,7 +43,9 @@ public class BoardManager {
                     System.out.println("허용되는 메뉴가 아닙니다. 제시된 메뉴 숫자 중 하나를 입력하십시오.");
                 }
             } catch (NumberFormatException e) { // 숫자를 입력받지 않은 경우 처리.
-                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 입력하십시오.");
+                e.printStackTrace();
+                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 다시 입력하십시오. " );
+
             }
         }
 
