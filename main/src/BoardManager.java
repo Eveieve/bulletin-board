@@ -63,15 +63,39 @@ public class BoardManager {
 
         // 보드 하나 생성하여 리스트에 순서대로 저장하기
         int bno = 0;
-        try {
-            bno = Integer.parseInt(sc.nextLine().trim());
-        } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
+
+        while(true) {
+            try {
+                bno = Integer.parseInt(sc.nextLine().trim());
+                break; // 정상적으로 입력되면 루프 종료하기.
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                System.out.println(invalidFormatMsg);
+            }
         }
-        System.out.println("Writer of this post?: ");
-        String writer = sc.nextLine();
-        System.out.println("Content of this post: ");
-        String content = sc.nextLine();
+
+        System.out.println("내용: ");
+        String content = null;
+        while(true) {
+            try {
+                content = sc.nextLine();
+                break;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        System.out.println("작성자: ");
+        String writer = null;
+        while(true) {
+            try {
+                writer = sc.nextLine();
+                break;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                System.out.println(invalidFormatMsg);
+            }
+        }
 
         Board board = new Board.BoardBuilder(bno, writer, content).build();
         boardMap.put(bno, board);
