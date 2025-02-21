@@ -12,10 +12,10 @@ public class BoardManager {
     AtomicInteger keyGenerator = new AtomicInteger(1); // 1씩 자동 증가하는 키.
     // 초기화 메소드  // 처음 포스트 몇개 넣기!!
  
-    public void initializeBoardList(){
-        boardList.add(new Board.BoardBuilder(1, "공지사항", "관리자", "사이트 업데이트 공지").build());
-        boardList.add(new Board.BoardBuilder(2, "자유게시판", "사용자1", "오늘 날씨 좋네요").build());
-        boardList.add(new Board.BoardBuilder(3, "질문게시판", "사용자2", "자바 질문 있습니다").build());
+    public void initializeBoardList(){ // bno 자동생성되기.
+        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "공지사항", "관리자", "사이트 업데이트 공지").build());
+        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "자유게시판", "사용자1", "오늘 날씨 좋네요").build());
+        boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "질문게시판", "사용자2", "자바 질문 있습니다").build());
         
     }
 
@@ -83,7 +83,8 @@ public class BoardManager {
 
             // 그냥 바로 뒤에 보드 추가하기.
             boardList.add(createdBoard);
-
+            int boardBno = keyGenerator.getAndIncrement();
+            createdBoard.setBno(boardBno); // 자동 생성되는 키값으로 bno 필드도 세팅.
             // 전체 게시물 출력하기.
             printAllBoards();
             // 생성된 보드 객체 반환.
