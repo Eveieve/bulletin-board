@@ -32,13 +32,18 @@ public class BoardManager {
         System.out.println("Main Menu: 1. Create | 2. Read | 3. Clear | 4.Exit ");
         System.out.println("Choose your option: ");
 
+        // 허용할 숫자 목록
+        List<Integer> allowed = Arrays.asList(1, 2, 3, 4);
         while(true) {
             try {
                 int inNum = Integer.parseInt(sc.nextLine().trim());
-                return inNum; // return 되면 while 루프 종료됨.
-            } catch (NumberFormatException e) {
-                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 입력해주십시오.");
-
+                if(allowed.contains(inNum)){ // 사용자 입력값이 허용되는 메뉴중에 있으면
+                    return inNum; // return 되면 while 루프 종료됨.
+                } else { // 입력 받은 숫자가 허용되는 숫자중 없으면
+                    System.out.println("허용되는 메뉴가 아닙니다. 제시된 메뉴 숫자 중 하나를 입력하십시오.");
+                }
+            } catch (NumberFormatException e) { // 숫자를 입력받지 않은 경우 처리.
+                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 입력하십시오.");
             }
         }
 
