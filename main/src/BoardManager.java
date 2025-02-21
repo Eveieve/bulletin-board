@@ -8,8 +8,8 @@ public class BoardManager {
     Scanner sc = new Scanner(System.in);
 
     // 예외 처리 시 이용할 메시지
-    final static String invalidFormatMsg = "잘못된 형식의 입력입니다. 제시된 메뉴의 숫자 중 선택하여 다시 입력하십시오.";
-    final static String invalidNumberMsg = "허용되는 숫자가 아닙니다. 제시된 메뉴 숫자 중 하나를 입력하십시오.";
+    public final static String invalidFormatMsg = "잘못된 형식의 입력입니다. 제시된 메뉴의 숫자 중 선택하여 다시 입력하십시오.";
+    public final static String invalidNumberMsg = "허용되는 숫자가 아닙니다. 제시된 메뉴 숫자 중 하나를 입력하십시오.";
 
 
     public Map<Integer, Board> boardMap = new HashMap<>();
@@ -207,5 +207,9 @@ public class BoardManager {
         boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
     }
 
+    void menu4_exit() {
+        System.out.println("** 게시판 종료 **");
+        System.exit(0);
+    }
 
 }

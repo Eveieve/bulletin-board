@@ -4,12 +4,12 @@ public class Main {
 
 BoardManager manager = new BoardManager();
 manager.initializeBoardMap(); // boarMap 을 초기화 해주기.
+
 boolean status = true;
 
-
 while(status) {
-    int userInput = manager.getMenuInput();
-
+    try {
+        int userInput = manager.getMenuInput();
 
         if(userInput == 1) {
 
@@ -25,9 +25,13 @@ while(status) {
 
         } else if(userInput ==3) {
             manager.menu3_clear();
-        } else {
-            // exception 처리
+        } else if(userInput == 4){
+            manager.menu4_exit();
         }
+    } catch (NumberFormatException e) {
+        e.printStackTrace();
+        System.out.println(ExceptionStrings.invalidFormatMsg);
+    }
 
 }
 
