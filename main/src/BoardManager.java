@@ -7,17 +7,16 @@ public class BoardManager {
 
     Scanner sc = new Scanner(System.in);
 
-    // 예외 처리 시 이용할 메시지
-    public final static String invalidFormatMsg = "잘못된 형식의 입력입니다. 제시된 메뉴의 숫자 중 선택하여 다시 입력하십시오.";
-    public final static String invalidNumberMsg = "허용되는 숫자가 아닙니다. 제시된 메뉴 숫자 중 하나를 입력하십시오.";
-
-
-    public Map<Integer, Board> boardMap = new HashMap<>();
+    
+    List<Board> boardList = new ArrayList<>();
     AtomicInteger keyGenerator = new AtomicInteger(1); // 1씩 자동 증가하는 키.
     // 초기화 메소드  // 처음 포스트 몇개 넣기!!
-    public void initializeBoardMap() {
-        boardMap.put(1, new Board.BoardBuilder(1, "hello","ssg", "It's a nice weather").build());
-        boardMap.put(2, new Board.BoardBuilder(2, "title2","ssg2", "It's sunny today.").build());
+ 
+    public void initializeBoardList(){
+        boardList.add(new Board.BoardBuilder(1, "공지사항", "관리자", "사이트 업데이트 공지").build());
+        boardList.add(new Board.BoardBuilder(2, "자유게시판", "사용자1", "오늘 날씨 좋네요").build());
+        boardList.add(new Board.BoardBuilder(3, "질문게시판", "사용자2", "자바 질문 있습니다").build());
+        
     }
 
     // 처음 사용자로부터 메뉴 입력 받기. 입력 정수 반환.
@@ -33,12 +32,10 @@ public class BoardManager {
                 if(allowed.contains(inNum)){ // 사용자 입력값이 허용되는 메뉴중에 있으면
                     return inNum; // return 되면 while 루프 종료됨.
                 } else { // 입력 받은 숫자가 허용되는 숫자중 없으면
-                    System.out.println(invalidNumberMsg);
+                   ExceptionStrings.printInvalidNumberMsg();
                 }
             } catch (NumberFormatException e) { // 숫자를 입력받지 않은 경우 처리.
-                e.printStackTrace();
-                System.out.println(invalidFormatMsg);
-
+               ExceptionStrings.printInvalidFormatMsg(e);
             }
         }
 
@@ -82,15 +79,15 @@ public class BoardManager {
 
         // submenu에 따라 저장할지 취소할지 결정
         if (getSubmenuOf1() == 1) {
-            Board board = new Board.BoardBuilder(title, writer, content).build();
+            Board createdBoard = new Board.BoardBuilder(title, writer, content).build();
 
             // 그냥 바로 뒤에 보드 추가하기.
-            boardMap.put(keyGenerator.getAndIncrement(), board);
+            boardList.add(createdBoard);
 
             // 전체 게시물 출력하기.
             printAllBoards();
             // 생성된 보드 객체 반환.
-            return board;
+            return createdBoard;
         } else if (getSubmenuOf1() == 2) System.out.println("작업을 취소하였습니다. ");
 
         return null;
@@ -100,13 +97,13 @@ public class BoardManager {
         System.out.println("보조 메뉴: 1.OK | 2.Cancel" );
         System.out.println("메뉴 선택:" );
 
-        // 1.ok- save to boardMap 2. cancel - cancel user input.
+        // 1.ok- save to boardList 2. cancel - cancel user inadd.
         while(true) {
             try {
-                int input = Integer.parseInt(sc.nextLine());
-                if(input == 1 || input == 2) return input; // return user's submenu input
+                int inadd = Integer.parseInt(sc.nextLine());
+                if(inadd == 1 || inadd == 2) return inadd; // return user's submenu inadd
                 else {
-                    System.out.println(invalidNumberMsg);
+                    ExceptionStrings.printInvalidNumberMsg();
                 }
             } catch (NumberFormatException e) {
                ExceptionStrings.printInvalidFormatMsg(e);
@@ -120,10 +117,10 @@ public class BoardManager {
 //            if (submenu == 1) { // 저장하기.
 //                // 저장 누르면 저장하기.
 //                int nowBno = keyGenerator.getAndIncrement();
-//                boardMap.put(nowBno, board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
+//                boardList.add(nowBno, board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
 //                board.setBno(nowBno); // 자동 생성되는 키값으로 bno 필드도 세팅.
 //                // 저장 후 전체 게시물 출력하기. --> 사용자가 지정한 bno 나오지 않고 맵의 key 출력됨.
-//                boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
+//                boardList.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
 //            } else if(submenu == 2) {
 //                System.out.println("Canceled operation. ");
 //            }
@@ -145,7 +142,7 @@ public class BoardManager {
                 try {
                     System.out.print("bno: ");
                     bno = Integer.parseInt(sc.nextLine().trim());
-                    Board selectedBoard = boardMap.get(bno);
+                    Board selectedBoard = boardList.get(bno);
 
                     System.out.println(Constants.hashLine);
                     System.out.println(Constants.BNO_KOREAN + selectedBoard.getBno());
@@ -158,7 +155,7 @@ public class BoardManager {
                     ExceptionStrings.printInvalidFormatMsg(e);
                 }
             } catch (NullPointerException e) {
-                //selectedBoard = Objects.requireNonNull(boardMap.get(bno), "null 값입니다. ");
+                //selectedBoard = Objects.requireNonNull(boardList.get(bno), "null 값입니다. ");
                 System.out.println("해당 게시물이 없습니다. 다시 게시물 번호를 입력하시오.");
             }
         }
@@ -187,7 +184,7 @@ public class BoardManager {
     // 2번 보조 메뉴 - 이미 게시물 번호 선택한 상태 - 1.내용, 작성자 업데이트
     void runSubmenuOf2( int bno) {
 
-        Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물
+        Board selectedBoard = boardList.get(bno); // 사용자가 선택한 게시물
 
         while(true) {
           int subMenu =   getSubmenuOf2(); // 올바른 값 입력될때까지 계속 menu2의 submenu 받기.
@@ -222,9 +219,9 @@ public class BoardManager {
                     // 1. ok 하면
                     try { // submenu 다시 - 나중에 메소드로 빼기.
                         System.out.println("보조 메뉴: 1. OK | 2. Cancel");
-                        int input = Integer.parseInt(sc.nextLine().trim());
-                        if(input == 1) runSubmenu2_1(selectedBoard, updatedTitle, updatedContent, updatedWriter);
-                        else if(input == 2) System.out.println("작업을 취소합니다.");
+                        int inadd = Integer.parseInt(sc.nextLine().trim());
+                        if(inadd == 1) runSubmenu2_1(selectedBoard, updatedTitle, updatedContent, updatedWriter);
+                        else if(inadd == 2) System.out.println("작업을 취소합니다.");
                         else {
                             ExceptionStrings.printInvalidNumberMsg();
                         }
@@ -235,15 +232,16 @@ public class BoardManager {
                     break;
                 }else if(subMenu == 2) { //  submenu 2 - Delete
                     int removeId = bno; // 인자로 받은 bno
-                    // boardMap.remove(removeId); //  보드가 아니라 값을 반환함.
+                    // boardList.remove(removeId); //  보드가 아니라 값을 반환함.
                     System.out.println("Post number " + removeId + "is deleted. ");
                     System.out.println(Constants.LIST_ALL_BOARDS);
                     System.out.println(Constants.dashLine);
                     System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
                     System.out.println(Constants.dashLine);
-                    //boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-                    for (Board board : boardMap.values()) {
-                        System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+                    //boardList.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+                    for (Board board : boardList) {
+                        System.out.printf("%-3d %-10s %-12s %s%n",
+                                board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
                     }
                     break;
                 }else if(subMenu == 3) { // submenu 3 - List - 전체 게시물 출력하기
@@ -270,19 +268,22 @@ public class BoardManager {
     }
     void menu3_clear() {
         System.out.println("Are you sure you want to delete all posts?: 1. Yes | 2. No");
-        int input =  Integer.parseInt(sc.nextLine().trim());
-        if(input == 1) {
-            boardMap.clear();
+        int inadd =  Integer.parseInt(sc.nextLine().trim());
+        if(inadd == 1) {
+            boardList.clear();
             System.out.println("All posts have been deleted");
-        } else if(input ==2) {
+        } else if(inadd ==2) {
             System.out.println("Canceled delete all operation. ");
         } else {
-            System.out.println("please input a valid number. ");
+            System.out.println("please inadd a valid number. ");
         }// *********** exception 처리 문자 입력했을때 해야 할듯?
 
         // 남은 게시물 출력
         System.out.println("Remaining posts: ");
-        boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+        for (Board board : boardList) {
+            System.out.printf("%-3d %-10s %-12s %s%n",
+                    board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+        }
     }
 
     void menu4_exit() {
@@ -296,8 +297,9 @@ public class BoardManager {
         System.out.println(Constants.dashLine);
         System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title\n");
         System.out.println(Constants.dashLine);
-        for (Board board : boardMap.values()) {
-            System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+        for (Board board : boardList) {
+            System.out.printf("%-3d %-10s %-12s %s%n",
+                    board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
         }
     }
 }

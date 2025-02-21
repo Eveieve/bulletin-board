@@ -3,7 +3,7 @@ public class Main {
     public static void main(String[] args) {
 
 BoardManager manager = new BoardManager();
-manager.initializeBoardMap(); // boarMap 을 초기화 해주기.
+manager.initializeBoardList();
 
 boolean status = true;
 
