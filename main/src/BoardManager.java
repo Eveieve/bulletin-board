@@ -17,12 +17,12 @@ public class BoardManager {
 
     // 초기화 메소드  // 처음 포스트 몇개 넣기!!
     public void initializeBoardMap() {
-        boardMap.put(1, new Board.BoardBuilder(1, "ssg", "It's a nice weather").build());
-        boardMap.put(2, new Board.BoardBuilder(2, "ssg2", "It's sunny today.").build());
+        boardMap.put(1, new Board.BoardBuilder("hello","ssg", "It's a nice weather").build());
+        boardMap.put(2, new Board.BoardBuilder("title2","ssg2", "It's sunny today.").build());
     }
 
     // 처음 사용자로부터 메뉴 입력 받기. 입력 정수 반환.
-    int getMenuInput() {
+    int getMainMenu() {
         System.out.println("Main Menu: 1. Create | 2. Read | 3. Clear | 4.Exit ");
         System.out.println("Choose your option: ");
 
@@ -52,32 +52,32 @@ public class BoardManager {
         // 보드 하나 생성하여 리스트에 순서대로 저장하기
         int bno = 0;
 
-        while(true) {
-            try {
-                bno = Integer.parseInt(sc.nextLine().trim());
-                break; // 정상적으로 입력되면 루프 종료하기.
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                System.out.println(invalidFormatMsg);
-            }
-        }
+//        while(true) {
+//            try {
+//                bno = Integer.parseInt(sc.nextLine().trim());
+//                break; // 정상적으로 입력되면 루프 종료하기.
+//            } catch (NumberFormatException e) {
+//                e.printStackTrace();
+//                System.out.println(invalidFormatMsg);
+//            }
+//        }
 
-        System.out.println("내용: ");
-        String content = null;
+        System.out.println(Constants.TITLE);
+        String title = " ";
         while(true) {
             try {
-                content = sc.nextLine();
+                title = sc.nextLine();
                 break;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
-        System.out.println("작성자: ");
-        String writer = null;
+        System.out.println(Constants.CONTENT);
+        String content = " ";
         while(true) {
             try {
-                writer = sc.nextLine();
+                content = sc.nextLine();
                 break;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -85,7 +85,17 @@ public class BoardManager {
             }
         }
 
-        Board board = new Board.BoardBuilder(bno, writer, content).build();
+        System.out.println(Constants.WRITER);
+        String writer = " ";
+        while(true) {
+            try {
+                writer = sc.nextLine();
+                break;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        Board board = new Board.BoardBuilder(title, writer, content).build();
             return board;
     }
 
@@ -163,7 +173,6 @@ public class BoardManager {
     int getSubmenuOf2() {
         System.out.println(Constants.dashLine);
         System.out.println("보조 메뉴: 1. Update | 2. Delete | 3. List");
-
         System.out.print("bno: ");
         int subMenu = 0;
         try {
@@ -180,12 +189,12 @@ public class BoardManager {
     }
 
     // 2번 보조 메뉴 - 이미 게시물 번호 선택한 상태 - 1.내용, 작성자 업데이트
-    void submenuOf2(int subMenu, int bno) {
+    void runSubmenuOf2( int bno) {
 
         Board selectedBoard = boardMap.get(bno); // 사용자가 선택한 게시물
 
         while(true) {
-            getSubmenuOf2(); // 올바른 값 입력될때까지 계속 menu2의 submenu 받기.
+          int subMenu =   getSubmenuOf2(); // 올바른 값 입력될때까지 계속 menu2의 submenu 받기.
             try {
                 if(subMenu == 1) {  // Update
                     // 보드맵의 객체 하나하나의 필드값을 바꿀 수 있도록하기.
