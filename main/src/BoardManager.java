@@ -2,10 +2,15 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.util.*;
 
+// 보드 매니저는 게시물을 관리한다. 생성 삭제 업데이트 등의 기능을 수행한다.
 public class BoardManager {
-    // 보드 매니저는 보드를 관리한다. 생성 삭제 업데이트 등의 기능을 수행한다.
 
-     Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
+
+    // 예외 처리 시 이용할 메시지
+    final static String invalidFormatMsg = "잘못된 형식의 입력입니다. 제시된 메뉴의 숫자 중 선택하여 다시 입력하십시오.";
+    final static String invalidNumberMsg = "허용되는 숫자가 아닙니다. 제시된 메뉴 숫자 중 하나를 입력하십시오.";
+
 
     public Map<Integer, Board> boardMap = new HashMap<>();
 
@@ -40,11 +45,11 @@ public class BoardManager {
                 if(allowed.contains(inNum)){ // 사용자 입력값이 허용되는 메뉴중에 있으면
                     return inNum; // return 되면 while 루프 종료됨.
                 } else { // 입력 받은 숫자가 허용되는 숫자중 없으면
-                    System.out.println("허용되는 메뉴가 아닙니다. 제시된 메뉴 숫자 중 하나를 입력하십시오.");
+                    System.out.println(invalidNumberMsg);
                 }
             } catch (NumberFormatException e) { // 숫자를 입력받지 않은 경우 처리.
                 e.printStackTrace();
-                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 다시 입력하십시오." );
+                System.out.println(invalidFormatMsg);
 
             }
         }
