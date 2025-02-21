@@ -48,7 +48,7 @@ public class BoardManager {
 
         Board board = new Board.BoardBuilder(bno, writer, content).build();
         boardMap.put(bno, board);
-        boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + content));
+        boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
 
 
     }
