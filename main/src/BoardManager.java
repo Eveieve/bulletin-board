@@ -21,11 +21,11 @@ public class BoardManager {
     // getMenuInput = 사용자의 값을 입력 받는다.
 
     // 메소드들과 사용자 입력 메뉴 매핑하기.
-    Map<Integer, Runnable> methodMap = new HashMap<>();
-
-    private void mapMethods() {
-        methodMap.put(1, this::create); // 패스할걸 여기서 미리 정해야 하나?
-    }
+//    Map<Integer, Runnable> methodMap = new HashMap<>();
+//
+//    private void mapMethods() {
+//        methodMap.put(1, this::create); // 패스할걸 여기서 미리 정해야 하나?
+//    }
 
     // 처음 사용자로부터 메뉴 입력 받기. 입력 정수 반환.
     int getMenuInput() {
@@ -45,10 +45,11 @@ public class BoardManager {
         String writer = sc.nextLine();
         System.out.println("Content of this post: ");
         String content = sc.nextLine();
-        // 바로 입력 받기
+
         Board board = new Board.BoardBuilder(bno, writer, content).build();
         boardMap.put(bno, board);
         boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + content));
+
 
     }
 
@@ -110,7 +111,7 @@ public class BoardManager {
         System.out.println("Are you sure you want to delete all posts?: 1. Yes | 2. No");
         int input =  Integer.parseInt(sc.nextLine().trim());
         if(input == 1) {
-            methodMap.clear();
+            boardMap.clear();
             System.out.println("All posts have been deleted");
         } else if(input ==2) {
             System.out.println("Canceled delete all operation. ");
