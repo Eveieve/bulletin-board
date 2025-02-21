@@ -26,9 +26,10 @@ public class Board {
         this.writer = writer;
     }
 
-    public void getBno(int bno) {
-        this.bno = bno;
+    public int getBno() {
+        return this.bno = bno;
     }
+
     // Board 의 프라이빗 생성자.
     // 객체에 넣을 수 있는 필드는 모두 바깥 클래스 생성자에 넣음. toString 했을때 정보 볼 수 있음.
     private Board(BoardBuilder builder) {

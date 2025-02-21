@@ -11,7 +11,8 @@
 - 예외처리 시 프린트할 메시지를 변수로 처리한다. 
 
 # Required features 
-
+- submenu of menu1. 
+- 
 # Things to Improve
 1. 프린트 형식 정확하게 맞추기. 
 2. 입력 예외 처리하기. 

@@ -14,8 +14,10 @@ while(status) {
         if(userInput == 1) {
 
             System.out.println("You have chosen menu 1.");
-            manager.create();
-
+            Board createdBoard = manager.create();
+            int submenu = manager.getSubmenuOf1();
+            manager.runSubMenuOf1(submenu, createdBoard);
+            
         } else if(userInput ==2){
             int bno = manager.menu2_read(); // 먼저 2번 특정 게시물 출력, 사용자가 선택한 게시물 번호 반환.
             int subMenu = manager.getSubmenuOf2(); // 자동으로 보조 메뉴 호출
