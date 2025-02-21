@@ -11,7 +11,7 @@
 9. 
 # Refactor 
 - 예외처리 시 프린트할 메시지를 변수로 처리한다. 
-
+- 해쉬맵에서 보드 객체가 생성 될때마다 객체들의 키값이 자동으로 1증가 되도록 한다. 
 # Required features 
 - submenu of menu1. 
 - 
