@@ -1,7 +1,9 @@
 import org.w3c.dom.ls.LSOutput;
 
+import javax.crypto.KeyGenerator;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 // 보드 매니저는 게시물을 관리한다. 생성 삭제 업데이트 등의 기능을 수행한다.
 public class BoardManager {
@@ -14,11 +16,11 @@ public class BoardManager {
 
 
     public Map<Integer, Board> boardMap = new HashMap<>();
-
+    AtomicInteger keyGenerator = new AtomicInteger(1); // 1씩 자동 증가하는 키.
     // 초기화 메소드  // 처음 포스트 몇개 넣기!!
     public void initializeBoardMap() {
-        boardMap.put(1, new Board.BoardBuilder("hello","ssg", "It's a nice weather").build());
-        boardMap.put(2, new Board.BoardBuilder("title2","ssg2", "It's sunny today.").build());
+        boardMap.put(keyGenerator.getAndIncrement(), new Board.BoardBuilder("hello","ssg", "It's a nice weather").build());
+        boardMap.put(keyGenerator.getAndIncrement(), new Board.BoardBuilder("title2","ssg2", "It's sunny today.").build());
     }
 
     // 처음 사용자로부터 메뉴 입력 받기. 입력 정수 반환.
@@ -124,7 +126,7 @@ public class BoardManager {
         try {
             if (submenu == 1) { // 저장하기.
                 // 저장 누르면 저장하기.
-                boardMap.put(board.getBno(), board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
+                boardMap.put(keyGenerator.getAndIncrement(), board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
                 // 저장 후 전체 게시물 출력하기. --> 사용자가 지정한 bno 나오지 않고 맵의 key 출력됨.
                 boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
             } else if(submenu == 2) {
