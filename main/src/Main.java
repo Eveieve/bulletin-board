@@ -21,7 +21,7 @@ while(status) {
         } else if(userInput ==2){
             int bno = manager.menu2_read(); // 먼저 2번 특정 게시물 출력, 사용자가 선택한 게시물 번호 반환.
             int subMenu = manager.getSubmenuOf2(); // 자동으로 보조 메뉴 호출
-            manager.submenuOf2(subMenu, bno);
+            manager.submenuOf2(subMenu, bno); // submenu2 - 1 도 자동 호출.
 
         } else if(userInput ==3) {
             manager.menu3_clear();

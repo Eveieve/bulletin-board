@@ -139,7 +139,7 @@ public class BoardManager {
                     System.out.print("bno: ");
                     bno = Integer.parseInt(sc.nextLine().trim());
                 } catch (NumberFormatException e) {
-                    ExceptionStrings.printInvalidFormatMsg();
+                    ExceptionStrings.printInvalidFormatMsg(e);
                 }
                 System.out.println(Constants.hashLine);
                 selectedBoard = Objects.requireNonNull(boardMap.get(bno), "null 값입니다. ");
@@ -194,44 +194,53 @@ public class BoardManager {
                 System.out.print(Constants.TITLE);
                 updatedTitle = sc.nextLine();
             } catch (NumberFormatException e) {
-                ExceptionStrings.printInvalidNumberMsg(e);
+                ExceptionStrings.printInvalidFormatMsg(e);
             }
             String updatedContent = null;
             try {
                 System.out.print(Constants.CONTENT);
                 updatedContent = sc.nextLine();
             } catch (NumberFormatException e) {
-                ExceptionStrings.printInvalidNumberMsg(e);
+                ExceptionStrings.printInvalidFormatMsg(e);
             }
             String updatedWriter = null;
             try {
                 System.out.print(Constants.WRITER);
                 updatedWriter = sc.nextLine();
             } catch (NumberFormatException e ) {
-                ExceptionStrings.printInvalidNumberMsg(e);
+                ExceptionStrings.printInvalidFormatMsg(e);
             }
 
-            selectedBoard.setTitle(updatedTitle);
-            selectedBoard.setContent(updatedContent);
-            selectedBoard.setWriter(updatedWriter);
+            // 1. ok 하면
+            try { // submenu 다시 - 나중에 메소드로 빼기.
+                System.out.println("보조 메뉴: 1. OK | 2. Cancel");
+                int input = Integer.parseInt(sc.nextLine().trim());
+                if(input == 1) runSubmenu2_1(selectedBoard, updatedTitle, updatedContent, updatedWriter);
+                else if(input == 2) System.out.println("작업을 취소합니다.");
+                else {
+                   ExceptionStrings.printInvalidNumberMsg();
+                }
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
+
 
         }else if(subMenu == 2) {
             // Delete
             int removeId = bno; // 인자로 받은 bno
-            boardMap.remove(removeId); //  보드가 아니라 값을 반환함.
-            //System.out.println("Post number " + removedBoard.getBno() + "is deleted. ");
-//            System.out.println(Constants.LIST_ALL_BOARDS);
-//            System.out.println(Constants.dashLine);
-//            System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
-//            System.out.println(Constants.dashLine);
-//            //boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-//            for (Board board : boardMap.values()) {
-//                System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
-//            }
+           // boardMap.remove(removeId); //  보드가 아니라 값을 반환함.
+            System.out.println("Post number " + removeId + "is deleted. ");
+            System.out.println(Constants.LIST_ALL_BOARDS);
+            System.out.println(Constants.dashLine);
+            System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
+            System.out.println(Constants.dashLine);
+            //boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
+            for (Board board : boardMap.values()) {
+                System.out.printf("%-3d %-10s %-12s %s%n", board.getBno(), board.getWriter(), board.getDate(), board.getTitle());
+            }
         }else if(subMenu == 3) {
 //            System.out.println("Listing all posts: ");
 //            boardMap.forEach((key, content) -> System.out.println("Post number: " + key + "Content: " + content));
-
             System.out.println(Constants.LIST_ALL_BOARDS);
             System.out.println(Constants.dashLine);
             System.out.printf("%-3s %-10s %-12s %s%n", "no", "writer", "date", "title");
@@ -246,6 +255,13 @@ public class BoardManager {
         } //***** 숫자가 아니라 문자 입력했을때 예외 준비하기
     }
 
+    void runSubmenu2_1(Board selectedBoard, String updatedTitle, String updatedContent, String updatedWriter) { // menu2 - 1(update) - OK
+        //System.out.println("보조 메뉴: 1. OK | 2. Cancel");
+        selectedBoard.setTitle(updatedTitle);
+        selectedBoard.setContent(updatedContent);
+        selectedBoard.setWriter(updatedWriter);
+        System.out.println("게시물이 수정 되었습니다. ");
+    }
     void menu3_clear() {
         System.out.println("Are you sure you want to delete all posts?: 1. Yes | 2. No");
         int input =  Integer.parseInt(sc.nextLine().trim());
