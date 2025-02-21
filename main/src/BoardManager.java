@@ -31,8 +31,17 @@ public class BoardManager {
     int getMenuInput() {
         System.out.println("Main Menu: 1. Create | 2. Read | 3. Clear | 4.Exit ");
         System.out.println("Choose your option: ");
-        int inNum = Integer.parseInt(sc.nextLine().trim());
-        return inNum;
+
+        while(true) {
+            try {
+                int inNum = Integer.parseInt(sc.nextLine().trim());
+                return inNum; // return 되면 while 루프 종료됨.
+            } catch (NumberFormatException e) {
+                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 입력해주십시오.");
+
+            }
+        }
+
     }
 
     // option 1
