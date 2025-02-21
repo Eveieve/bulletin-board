@@ -57,8 +57,8 @@ public class BoardManager {
     }
 
     // option 1
-    // 입력 받고 게시물 하나 생성하기.
-    public void create() {
+    // 입력 받고 게시물 하나 생성하기. 보드 객체 반환.
+    Board create() {
         System.out.println("Number of this post?: ");
 
         // 보드 하나 생성하여 리스트에 순서대로 저장하기
@@ -97,11 +97,49 @@ public class BoardManager {
             }
         }
 
+
         Board board = new Board.BoardBuilder(bno, writer, content).build();
-        boardMap.put(bno, board);
-        boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
+//        boardMap.put(bno, board);
+//        boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
 
+            return board;
+    }
 
+    int getSubmenuOf1() {
+        System.out.println("보조 메뉴: 1.OK | 2.Cancel" );
+        System.out.println("메뉴 선택:" );
+
+        // 1.ok- save to boardMap 2. cancel - cancel user input.
+        while(true) {
+            try {
+                int input = Integer.parseInt(sc.nextLine());
+                if(input == 1 || input == 2) return input; // return user's submenu input
+                else {
+                    System.out.println(invalidNumberMsg);
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                System.out.println(invalidFormatMsg); // wrong format
+                // try again
+            }
+        }
+
+    }
+
+    void runSubMenuOf1(int submenu, Board board) {
+        try {
+            if (submenu == 1) { // 저장하기.
+                // 저장 누르면 저장하기.
+                boardMap.put(board.getBno(), board); /// key 와 사용자가 입력한 bno 같음 -> 나중에 변경.
+                // 저장 후 전체 게시물 출력하기. --> 사용자가 지정한 bno 나오지 않고 맵의 key 출력됨.
+                boardMap.forEach((key, value) -> System.out.println("Post number: " + key + "Content: " + value));
+            } else if(submenu == 2) {
+                System.out.println("Canceled operation. ");
+            }
+        } catch (NumberFormatException e) {
+           e.printStackTrace();
+            System.out.println(invalidNumberMsg);
+        }
     }
 
     // 메뉴 2번 - 특정 번호의 보드 출력
