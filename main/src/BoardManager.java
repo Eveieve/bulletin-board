@@ -44,7 +44,7 @@ public class BoardManager {
                 }
             } catch (NumberFormatException e) { // 숫자를 입력받지 않은 경우 처리.
                 e.printStackTrace();
-                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 다시 입력하십시오. " );
+                System.out.println("잘못된 입력입니다. 제시된 메뉴 숫자 중 선택하여 다시 입력하십시오." );
 
             }
         }
@@ -55,8 +55,14 @@ public class BoardManager {
     // 입력 받고 게시물 하나 생성하기.
     public void create() {
         System.out.println("Number of this post?: ");
+
         // 보드 하나 생성하여 리스트에 순서대로 저장하기
-        int bno =  Integer.parseInt(sc.nextLine().trim());
+        int bno = 0;
+        try {
+            bno = Integer.parseInt(sc.nextLine().trim());
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Writer of this post?: ");
         String writer = sc.nextLine();
         System.out.println("Content of this post: ");
