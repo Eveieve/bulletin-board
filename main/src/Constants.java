@@ -14,6 +14,6 @@ public class Constants {
 
     public static final String LIST_ALL_BOARDS= "[게시물 목록]\n";
     public static final String UPDATE_BOARD= "[게시물 수정]\n";
-    public static final String CREATE_BOARD= "[게시물 생성]\n";
+    public static final String CREATE_BOARD= "[새 게시물 입력]\n";
 
 }
