@@ -1,5 +1,6 @@
 import lombok.Data;
 
+import java.sql.Date;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -13,7 +14,7 @@ public class Board {
     private String title;
     private String content;
     private String writer;
-    private String date;
+    private Date date;
 
     // Board 의 프라이빗 생성자.
     // 객체에 넣을 수 있는 필드는 모두 바깥 클래스 생성자에 넣음. toString 했을때 정보 볼 수 있음.
@@ -32,7 +33,7 @@ public class Board {
         private String title;
         private String content;
         private String writer; // 디비 연결 되면 자동으로 누군지 알 수 있도록.
-        private String date;
+        private Date date;
 
         // 외부 클래스에서 부를 수 있도록 퍼블릭.
         public BoardBuilder(String title, String writer, String content) {
@@ -44,7 +45,7 @@ public class Board {
             //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSSSSSS z"); // 나노초까지
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             ZonedDateTime nowTime = now.atZone(ZoneId.of("Asia/Seoul"));
-            this.date = nowTime.format(formatter);
+            this.date = Date.valueOf(nowTime.format(formatter));
         }
 
         public BoardBuilder(int bno, String title, String writer, String content) {
@@ -57,7 +58,7 @@ public class Board {
             //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSSSSSS z"); // 나노초까지
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             ZonedDateTime nowTime = now.atZone(ZoneId.of("Asia/Seoul"));
-            this.date = nowTime.format(formatter);
+            this.date = Date.valueOf(nowTime.format(formatter));
         }
         // BoardBuilder 클래스 안이지만 Board 타입을 쓸 수 있음.
         public Board build() {
