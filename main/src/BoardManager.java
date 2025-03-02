@@ -1,16 +1,43 @@
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // 보드 매니저는 게시물을 관리한다. 생성 삭제 업데이트 등의 기능을 수행한다.
 public class BoardManager {
+    void connectServer() {
+        Connection connection = null;
+
+        // connection 시도
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/madangdb?serverTimeZone=Asia/Seoul", "madang", "madang");
+            System.out.println("Driver loaded");
+        }catch (ClassNotFoundException e ) {
+            throw new RuntimeException(e);
+        }catch (SQLException e){
+            System.out.println("SQLException");
+        } finally {
+            // 연결 성공여부와 관계없이 요청 후에는 닫아줘야 한다.
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
     Scanner sc = new Scanner(System.in);
 
     List<Board> boardList = new ArrayList<>();
     AtomicInteger keyGenerator = new AtomicInteger(1); // 1씩 자동 증가하는 키.
 
-    // 처음 보드 몇개 넣기.
+    // 비어있는 데이터베이스에 데이터 처음 몇개 넣기.
     public void initializeBoardList() { // bno 자동생성되기.
         boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "게시판에 오신 것을 환영합니다. ", "winter", "사이트 업데이트 공지").build());
         boardList.add(new Board.BoardBuilder(keyGenerator.getAndIncrement(), "올 겨울은 많이 춥습니다.", "winter", "오늘 날씨 좋네요").build());
